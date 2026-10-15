@@ -28,15 +28,13 @@ function changeQuantity(cart, id, quantity) {
 function removeFromCart(cart, id) {
   const targetItem = cart.find(it => it.id === id);
   if(targetItem){
-    /*if(quantity===0 || targetItem.stock < quantity)
-      {
-        throw new RangeError();
-      }*/
-  
     cart= cart.filter(item => item.id !== id);
   }
   return cart; }
-function calculateCartSubtotal() { return notImplemented(); }
+function calculateCartSubtotal(cart) {
+
+   return cart.reduce((acc, curr)=> acc+ curr.quantity* curr.price ,0);
+  }
 function calculateOrderTotal() { return notImplemented(); }
 
 const cartApi = { addToCart, changeQuantity, removeFromCart, calculateCartSubtotal, calculateOrderTotal };
