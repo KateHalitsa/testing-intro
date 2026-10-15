@@ -2,11 +2,48 @@ function notImplemented() {
   throw new Error('Корзина ещё не реализована. Сначала прочитайте тесты.');
 }
 
-function addToCart() { return notImplemented(); }
-function changeQuantity() { return notImplemented(); }
-function removeFromCart() { return notImplemented(); }
-function calculateCartSubtotal() { return notImplemented(); }
-function calculateOrderTotal() { return notImplemented(); }
+function addToCart(cart, item, quantity) {
+  if(quantity===0 || item.stock < quantity)
+    {
+      throw new RangeError();
+    }
+  const targetItem = cart.find(it => it.id === item.id);
+  if(targetItem){
+    targetItem.quantity+=quantity;
+  }else{
+  cart.push({...item,quantity })
+}
+   return cart; }
+function changeQuantity(cart, id, quantity) { 
+  const targetItem = cart.find(it => it.id === id);
+  if(targetItem){
+    if(quantity===0 || targetItem.stock < quantity)
+      {
+        throw new RangeError();
+      }
+  
+    targetItem.quantity=quantity;
+  }
+  return cart; }
+function removeFromCart(cart, id) {
+  const targetItem = cart.find(it => it.id === id);
+  if(targetItem){
+    cart= cart.filter(item => item.id !== id);
+  }
+  return cart; }
+function calculateCartSubtotal(cart) {
+
+   return cart.reduce((acc, curr)=> acc+ curr.quantity* curr.price ,0);
+  }
+function calculateOrderTotal(cart, promoCode) { 
+  const subtotal = calculateCartSubtotal(cart);
+  const discount = promoCode ==="SAVE10"&& subtotal >= 20000 ? subtotal * 0.1  :0;
+  const delivery = subtotal >= 50000 ? 0 : 30000;
+  const total = subtotal - discount + delivery;
+  return {
+      subtotal: subtotal, discount: discount, delivery: delivery, total: total,
+    };
+ }
 
 const cartApi = { addToCart, changeQuantity, removeFromCart, calculateCartSubtotal, calculateOrderTotal };
 
