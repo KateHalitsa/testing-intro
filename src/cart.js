@@ -14,7 +14,17 @@ function addToCart(cart, item, quantity) {
   cart.push({...item,quantity })
 }
    return cart; }
-function changeQuantity() { return notImplemented(); }
+function changeQuantity(cart, id, quantity) { 
+  const targetItem = cart.find(it => it.id === id);
+  if(targetItem){
+    if(quantity===0 || targetItem.stock < quantity)
+      {
+        throw new RangeError();
+      }
+  
+    targetItem.quantity=quantity;
+  }
+  return cart; }
 function removeFromCart() { return notImplemented(); }
 function calculateCartSubtotal() { return notImplemented(); }
 function calculateOrderTotal() { return notImplemented(); }
